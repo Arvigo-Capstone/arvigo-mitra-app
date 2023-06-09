@@ -3,6 +3,7 @@ package id.arvigo.arvigomitraapp
 import android.app.Application
 import id.arvigo.arvigomitraapp.di.dataPreferencesModule
 import id.arvigo.arvigomitraapp.di.networkModule
+import id.arvigo.arvigomitraapp.di.useCaseModule
 import id.arvigo.arvigomitraapp.di.viewModelModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
@@ -13,7 +14,7 @@ class MyApp : Application() {
         super.onCreate()
         GlobalContext.startKoin {
             androidContext(this@MyApp)
-            modules(networkModule, dataPreferencesModule, viewModelModules)
+            modules(networkModule, dataPreferencesModule, viewModelModules, useCaseModule)
         }
     }
 
