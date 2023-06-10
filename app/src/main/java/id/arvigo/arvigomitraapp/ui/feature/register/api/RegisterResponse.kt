@@ -1,15 +1,15 @@
-package id.arvigo.arvigomitraapp.data.source.network.response
+package id.arvigo.arvigomitraapp.ui.feature.register.api
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginResponse(
+data class RegisterResponse (
     @SerializedName("message")
     val message: String,
     @SerializedName("data")
-    val data: LoginResult,
+    val data: RegisterResult,
 )
 
-data class LoginResult(
+data class RegisterResult (
     @SerializedName("user_id")
     val userId: Int,
     @SerializedName("token")

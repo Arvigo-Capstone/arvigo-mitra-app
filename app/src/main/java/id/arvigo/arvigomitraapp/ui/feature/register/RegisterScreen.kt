@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
@@ -25,6 +25,7 @@ import id.arvigo.arvigomitraapp.R
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.provice.ProvinceItem
 import id.arvigo.arvigomitraapp.ui.component.PrimaryButton
 import id.arvigo.arvigomitraapp.ui.feature.LoginCheck
+import id.arvigo.arvigomitraapp.ui.feature.register.api.RegisterRequest
 import id.arvigo.arvigomitraapp.ui.feature.register.uistate.RegisterUiState
 import org.koin.androidx.compose.getViewModel
 
@@ -39,12 +40,14 @@ fun RegisterScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreenContent(
-    viewModel: RegisterViewModel = getViewModel(),
+    viewModelRegister : RegisterViewModel = getViewModel(),
+    viewModel: RegisterDropDownViewModel = getViewModel(),
     navController: NavController,
 ) {
 
-    val emailState = viewModel.emailState.value
-    val passwordState = viewModel.passwordState.value
+    val emailState by remember { mutableStateOf("") }
+    val passwordState by remember { mutableStateOf("") }
+    var confirmPasswordState by remember { mutableStateOf("") }
     val (snackbarVisibleState, setSnackBarState) = remember { mutableStateOf(false) }
     val options = remember {
         mutableStateOf<List<ProvinceItem>>(emptyList())
@@ -54,21 +57,7 @@ fun RegisterScreenContent(
     var selectedOptionId = 0
     val response = viewModel.response.value
 
-   LaunchedEffect(Unit) {
-       when (response) {
-           is RegisterUiState.SuccessGetProvice -> {
-               options.value = response.data
-           }
-           is RegisterUiState.Failure -> {
-               setSnackBarState(true)
-           }
-           else -> {}
-       }
-   }
-
-    Scaffold(
-
-    ) {
+    Scaffold() {
         Column(
             modifier = Modifier
                 .padding(it)
@@ -78,6 +67,17 @@ fun RegisterScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            when (response) {
+                is RegisterUiState.SuccessGetProvice -> {
+                    options.value = response.data
+                    Log.d("hit api province screen",
+                        "launched effect ${response.data[0].provinceName}")
+                }
+                is RegisterUiState.Failure -> {
+                    setSnackBarState(true)
+                }
+                else -> {}
+            }
             Image(
                 painter = painterResource(id = R.drawable.img_logo),
                 contentDescription = null,
@@ -94,7 +94,7 @@ fun RegisterScreenContent(
             Spacer(modifier = Modifier.padding(32.dp))
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = emailState.text,
+                value = emailState.toString(),
                 leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "emailIcon", tint = Color.LightGray) },
                 onValueChange = {
                     viewModel.setEmail(it)
@@ -107,9 +107,10 @@ fun RegisterScreenContent(
                 ),
             )
             Spacer(modifier = Modifier.padding(top = 12.dp))
+       //     PasswordTextField(value = passwordState.text, onValueChange = {viewModel.setPassword(it)}, placeHolder = "Password")
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = passwordState.text,
+                value = passwordState,
                 leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "passIcon", tint =  Color.LightGray) },
                 onValueChange = {
                     viewModel.setPassword(it)
@@ -147,6 +148,7 @@ fun RegisterScreenContent(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
                 ) {
+                    Log.d("hit api province screen","1 ${options.value}")
                     options.value.forEach { selectionOption ->
                         DropdownMenuItem(
                             text = { Text(selectionOption.provinceName) },
@@ -154,6 +156,7 @@ fun RegisterScreenContent(
                                 selectedOptionText = selectionOption.provinceName
                                 selectedOptionId = selectionOption.provinceId
                                 expanded = false
+                                Log.d("hit api province screen","onclick $selectedOptionId, $selectedOptionText")
                             },
                             contentPadding = PaddingValues(6.dp),
                         )
@@ -163,8 +166,28 @@ fun RegisterScreenContent(
 
             Spacer(modifier = Modifier.padding(60.dp))
             val context = LocalContext.current
-            PrimaryButton(title = "Sign In", onClick = {
-                //viewModel.loginNew(emailState.text, passwordState.text, role)
+            PrimaryButton(title = "Register", onClick = {
+                val storeName = ""
+                val password = ""
+                val passwordConfirmation = ""
+                val street = ""
+                val cityId = 123
+                val districtId = 234
+                val subDistrictId = 345
+                val postalCodeId = 567
+                val registerRequest = RegisterRequest(
+                    storeName = storeName,
+                    email = emailState,
+                    password = password,
+                    passwordConfirmation = passwordConfirmation,
+                    street = street,
+                    provinceId = selectedOptionId,
+                    cityId = cityId,
+                    districtId = districtId,
+                    subDistrictId = subDistrictId,
+                    postalCodeId = postalCodeId,
+                )
+                viewModelRegister.register(registerRequest)
             })
             Spacer(modifier = Modifier.padding(24.dp))
             LoginCheck(

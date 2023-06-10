@@ -8,6 +8,7 @@ import id.arvigo.arvigomitraapp.data.repository.AuthRepository
 import id.arvigo.arvigomitraapp.data.source.local.AuthPreferences
 import id.arvigo.arvigomitraapp.data.source.network.ApiService
 import id.arvigo.arvigomitraapp.ui.feature.login.LoginViewModel
+import id.arvigo.arvigomitraapp.ui.feature.register.RegisterDropDownViewModel
 import id.arvigo.arvigomitraapp.ui.feature.register.RegisterViewModel
 import id.arvigo.arvigomitraapp.ui.feature.splash.SplashViewModel
 import id.arvigo.arvigomitraapp.utils.StaticConstant.BASE_URL
@@ -48,7 +49,8 @@ val networkModule = module {
 val viewModelModules = module {
     viewModel { SplashViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
-    viewModel { RegisterViewModel(get(), get(), get()) }
+    viewModel { RegisterDropDownViewModel(get(), get(), get()) }
+    viewModel { RegisterViewModel(get()) }
 }
 
 val useCaseModule = module {

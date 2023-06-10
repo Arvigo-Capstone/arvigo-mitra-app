@@ -1,58 +1,68 @@
 package id.arvigo.arvigomitraapp.ui.feature.register
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import id.arvigo.arvigobasecore.domain.model.TextFieldState
-import id.arvigo.arvigobasecore.ui.common.UiEvents
-import id.arvigo.arvigomitraapp.data.repository.AuthRepository
-import id.arvigo.arvigomitraapp.data.source.local.AuthPreferences
 import id.arvigo.arvigomitraapp.data.source.network.ApiService
-import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.provice.ProvinceItem
-import id.arvigo.arvigomitraapp.ui.feature.register.uistate.RegisterUiState
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.launch
+import id.arvigo.arvigomitraapp.ui.feature.register.api.RegisterRequest
+import id.arvigo.arvigomitraapp.ui.feature.register.api.RegisterResponse
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterViewModel(
-    private val apiService: ApiService,
-    private val authPreferences: AuthPreferences,
-    private val authRepository: AuthRepository,
+    private val apiService: ApiService
 ) : ViewModel() {
+    private val _isLoading = mutableStateOf(false)
+    val isLoading: State<Boolean> = _isLoading
+    private val _responseMessage = MutableStateFlow<String?>(null)
+    val responseMessage: StateFlow<String?> = _responseMessage
 
-    val response: MutableState<RegisterUiState> = mutableStateOf(RegisterUiState.Empty)
+    fun register(request: RegisterRequest){
+        _isLoading.value = true
+        apiService.register(request).enqueue(object :
+        Callback<RegisterResponse>{
+            override fun onResponse(
+                call: Call<RegisterResponse>,
+                response: Response<RegisterResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful){
+                    val registerResponse = response.body()
+                    if (registerResponse != null) {
+                        // Registration successful
+                        val message = registerResponse.message
+                        registerResponse.data
+                        // Handle the success response accordingly
+                        _responseMessage.value = "Registered: $message"
+                        Log.d("neoTag", "Registered: $message")
+                    } else {
+                        // Response body is null
+                        _responseMessage.value = "Response body is null"
+                        Log.d("neoTag", "Response body is null")
+                    }
+                } else {
+                    // Registration failed
+                    val errorMessage = response.errorBody()?.string()
+                    // Handle the error response accordingly
+                    _responseMessage.value = "Registration failed: $errorMessage"
+                    Log.d("neoTag", "Registration failed: $errorMessage")
+                }
 
-    private val _emailState = mutableStateOf(TextFieldState())
-    val emailState: State<TextFieldState> = _emailState
-
-    fun setEmail(value:String){
-        _emailState.value = emailState.value.copy(text = value)
-    }
-
-    private val _passwordState = mutableStateOf(TextFieldState())
-    val passwordState: State<TextFieldState> = _passwordState
-
-    fun setPassword(value:String){
-        _passwordState.value = passwordState.value.copy(text = value)
-    }
-
-    init {
-        getProvice()
-    }
-
-    fun getProvice() = viewModelScope.launch {
-        authRepository.getProvice()
-            .onStart {
-                response.value = RegisterUiState.Loading
             }
-            .collect {
-                response.value = RegisterUiState.SuccessGetProvice(it)
-                Log.d("Hit API Provice", "get Provice")
+
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                _isLoading.value = false
+                _responseMessage.value = "Registration failed: ${t.message}"
+                Log.d("neoTag", "onFailure: $t")
             }
+        })
     }
 
+    fun clearResponseMessage() {
+        _responseMessage.value = null
+    }
 }
