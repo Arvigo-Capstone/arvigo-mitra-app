@@ -49,10 +49,6 @@ class RegisterViewModel(
             .onStart {
                 response.value = RegisterUiState.Loading
             }
-            .catch {
-                response.value = RegisterUiState.Failure(it)
-                Log.d("ERROR API Provice", it.toString())
-            }
             .collect {
                 response.value = RegisterUiState.SuccessGetProvice(it)
                 Log.d("Hit API Provice", "get Provice")

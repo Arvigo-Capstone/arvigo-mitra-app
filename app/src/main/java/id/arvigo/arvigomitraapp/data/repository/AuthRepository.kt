@@ -10,7 +10,11 @@ class AuthRepository(private val apiService: ApiService) {
 
     fun getProvice() = flow {
         Log.d("Hit API Province", "get all province")
-        emit(apiService.getProvice().data)
+        try {
+            emit(apiService.getProvice().data)
+        } catch (e: Exception) {
+            Log.d("ERROR API Province", e.toString())
+        }
     }.flowOn(Dispatchers.IO)
 
     fun getCity(provice_id: Int) = flow {
@@ -20,7 +24,7 @@ class AuthRepository(private val apiService: ApiService) {
         ).data)
     }.flowOn(Dispatchers.IO)
 
-    fun getDistrictt(city_id: Int) = flow {
+    fun getDistrict(city_id: Int) = flow {
         Log.d("Hit API District", "get all disctrict")
         emit(apiService.getDistrict(
             id = city_id
