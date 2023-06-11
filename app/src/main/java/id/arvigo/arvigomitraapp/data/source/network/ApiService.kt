@@ -7,9 +7,11 @@ import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.di
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.postal_code.PostalcodeResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.provice.ProviceResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.subdistrict.SubdistrictResponse
+import id.arvigo.arvigomitraapp.data.source.network.response.home.HomeResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -48,4 +50,8 @@ interface ApiService {
         @Path ("id") id : Int
     ) : PostalcodeResponse
 
+    @GET("/v1/merchant-app/home")
+    suspend fun getHome(
+            @Header("Authorization") token: String,
+    ) : HomeResponse
 }
