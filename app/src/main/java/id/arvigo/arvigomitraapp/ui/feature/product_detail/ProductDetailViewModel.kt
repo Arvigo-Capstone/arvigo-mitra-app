@@ -32,4 +32,12 @@ class ProductDetailViewModel(private val productDetailRepository: ProductDetailR
                 }
     }
 
+
+    fun deleteProuduct(productId: String) = viewModelScope.launch {
+        productDetailRepository.deleteProduct(
+                productId = productId
+        )
+        Log.d("DELETE PENAWARAN SUCCESS", "delete Product Detail $productId")
+    }
+
 }

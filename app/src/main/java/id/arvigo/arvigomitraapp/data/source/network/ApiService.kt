@@ -7,6 +7,7 @@ import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.di
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.postal_code.PostalcodeResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.provice.ProviceResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.subdistrict.SubdistrictResponse
+import id.arvigo.arvigomitraapp.data.source.network.response.detail_product.DeleteResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.detail_product.ProductDetailResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.home.HomeResponse
 import retrofit2.Call
@@ -61,4 +62,10 @@ interface ApiService {
             @Header("Authorization") token: String,
             @Path("id") id: String
     ) : ProductDetailResponse
+
+    @GET("/v1/products/{id}")
+    suspend fun deleteProduct(
+            @Header("Authorization") token: String,
+            @Path("id") id: String
+    ) : DeleteResponse
 }

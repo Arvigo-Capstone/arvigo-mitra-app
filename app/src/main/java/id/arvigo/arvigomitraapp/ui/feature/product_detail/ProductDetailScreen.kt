@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -74,6 +75,7 @@ fun ProductDetailScreen(
     val viewModel: ProductDetailViewModel = getViewModel()
     val lifecycle : Lifecycle = LocalLifecycleOwner.current.lifecycle
     val idState = remember { mutableStateOf("") }
+    val openDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = Unit) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -90,7 +92,7 @@ fun ProductDetailScreen(
             topBar = {
                 SmallTopAppBar(
                         title = {
-                            Text(text = "Produk Detail")
+                            Text(text = "Detail Penawaran")
                         },
                         navigationIcon = {
                             IconButton(onClick = {
@@ -272,10 +274,7 @@ fun ProductDetailScreen(
                                         .fillMaxWidth()
                                         .height(50.dp),
                                 onClick = {
-//                                    val link = response.data.variants[0].linkAr
-//                                    val intent = Intent(context, DeepArActivity::class.java).apply {
-//                                        putExtra("linkAr", link)}
-//                                    openDeepAR.launch(intent)
+                                    openDialog.value = true
                                 },
                                 shape = MaterialTheme.shapes.small,
                                 colors = ButtonDefaults.buttonColors(
@@ -287,6 +286,42 @@ fun ProductDetailScreen(
                                     color = Color.White,
                             ))
                         }
+                    }
+
+                    if (openDialog.value) {
+                        AlertDialog(
+                                onDismissRequest = {
+                                    openDialog.value = false
+                                },
+                                title = {
+                                    Text(text = "Hapus Penawaran")
+                                },
+                                text = {
+                                    Text(text = "Apakah kamu yankin ingin menghapus penawaran ini?")
+                                },
+                                confirmButton = {
+                                    TextButton(
+                                            onClick = {
+                                                openDialog.value = false
+                                                viewModel.deleteProuduct(
+                                                        productId = response.data.id.toString(),
+                                                )
+                                                navController.popBackStack()
+                                            }
+                                    ) {
+                                        Text("Hapus")
+                                    }
+                                },
+                                dismissButton = {
+                                    TextButton(
+                                            onClick = {
+                                                openDialog.value = false
+                                            }
+                                    ) {
+                                        Text("Batal")
+                                    }
+                                }
+                        )
                     }
                 }
                 is ProductDetailState.Failure -> {
