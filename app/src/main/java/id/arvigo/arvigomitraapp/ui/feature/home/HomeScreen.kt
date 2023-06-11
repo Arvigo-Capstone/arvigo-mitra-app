@@ -15,6 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import id.arvigo.arvigomitraapp.R
+import id.arvigo.arvigomitraapp.ui.feature.home.uistate.HomeUiState
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeScreen(
@@ -27,17 +29,20 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenContent() {
+
+    val viewModel: HomeViewModel = getViewModel()
+
     Scaffold() {
         LazyColumn(
             modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 16.dp)
+                    .padding(it)
+                    .padding(horizontal = 16.dp)
         ) {
             item {
                 Text(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
                     text = "Dashboard",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
@@ -46,58 +51,83 @@ fun HomeScreenContent() {
                 )
                 Spacer(modifier = Modifier.height(48.dp))
                 Text(text = "Total Pengunjung", style = MaterialTheme.typography.titleMedium)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                ) {
-                    Card(
-                        modifier = Modifier
-                            .width(120.dp)
-                            .height(67.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(12.dp)
+                val response = viewModel.response.value
+
+                when (response) {
+                    is HomeUiState.Loading -> {
+                        CircularProgressIndicator()
+                    }
+                    is HomeUiState.Success -> {
+                        Row(
+                                modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 16.dp),
+                                horizontalArrangement = Arrangement.SpaceAround,
                         ) {
-                            Text(text = "Hari ini", style = MaterialTheme.typography.titleMedium)
-                            Text(text = "123", style = MaterialTheme.typography.titleLarge)
+                            Card(
+                                    modifier = Modifier
+                                            .width(120.dp)
+                                            .height(67.dp)
+                            ) {
+                                Column(
+                                        modifier = Modifier
+                                                .padding(12.dp)
+                                ) {
+                                    Text(text = "Hari ini", style = MaterialTheme.typography.titleMedium)
+                                    Text(text = response.data.today.toString(), style = MaterialTheme.typography.titleLarge.copy(
+                                        fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.primary,
+                                    ))
+                                }
+                            }
+                            Card(
+                                    modifier = Modifier
+                                            .width(120.dp)
+                                            .height(67.dp)
+                            ) {
+                                Column(
+                                        modifier = Modifier
+                                                .padding(12.dp)
+                                ) {
+                                    Text(text = "Bulan ini", style = MaterialTheme.typography.titleMedium)
+                                    Text(text = response.data.thisMonth.toString(), style = MaterialTheme.typography.titleLarge.copy(
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.primary,
+                                    ))
+                                }
+                            }
+                            Card(
+                                    modifier = Modifier
+                                            .width(120.dp)
+                                            .height(67.dp)
+                            ) {
+                                Column(
+                                        modifier = Modifier
+                                                .padding(12.dp)
+                                ) {
+                                    Text(text = "Bulan lalu", style = MaterialTheme.typography.titleMedium)
+                                    Text(text = response.data.lastMonth.toString(), style = MaterialTheme.typography.titleLarge.copy(
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.primary,
+                                    ))
+                                }
+                            }
                         }
                     }
-                    Card(
-                        modifier = Modifier
-                            .width(120.dp)
-                            .height(67.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(12.dp)
-                        ) {
-                            Text(text = "Bulan ini", style = MaterialTheme.typography.titleMedium)
-                            Text(text = "123", style = MaterialTheme.typography.titleLarge)
-                        }
+                    is HomeUiState.Failure -> {
+                        Text(text = response.error.message.toString(), style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                        ))
                     }
-                    Card(
-                        modifier = Modifier
-                            .width(120.dp)
-                            .height(67.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(12.dp)
-                        ) {
-                            Text(text = "Bulan lalu", style = MaterialTheme.typography.titleMedium)
-                            Text(text = "123", style = MaterialTheme.typography.titleLarge)
-                        }
-                    }
+
+                    else -> {}
                 }
                 Spacer(modifier = Modifier.height(48.dp))
                 Card() {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
+                                .fillMaxWidth()
+                                .padding(12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -125,8 +155,8 @@ fun HomeScreenContent() {
                 Card() {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
+                                .fillMaxWidth()
+                                .padding(12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -168,22 +198,22 @@ fun HomeScreenContent() {
 fun HomeProductCard() {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(160.dp)
-            .padding(bottom = 12.dp)
+                .fillMaxWidth()
+                .height(160.dp)
+                .padding(bottom = 12.dp)
     ) {
         Row() {
             Image(
                 painter = painterResource(id = R.drawable.img_logo),
                 contentDescription = "",
                 modifier = Modifier
-                    .width(160.dp)
-                    .height(160.dp),
+                        .width(160.dp)
+                        .height(160.dp),
             )
             Column(
                 modifier = Modifier
-                    .height(160.dp)
-                    .padding(12.dp),
+                        .height(160.dp)
+                        .padding(12.dp),
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(text = "Nama Produk", style = MaterialTheme.typography.titleMedium)
