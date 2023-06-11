@@ -1,6 +1,7 @@
 package id.arvigo.arvigomitraapp.ui.feature.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,19 +23,24 @@ import id.arvigo.arvigomitraapp.R
 import id.arvigo.arvigomitraapp.data.source.network.response.home.Product
 import id.arvigo.arvigomitraapp.ui.feature.home.uistate.HomeProductState
 import id.arvigo.arvigomitraapp.ui.feature.home.uistate.HomeUiState
+import id.arvigo.arvigomitraapp.ui.navigation.Screen
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeScreen(
     navController: NavController,
 ) {
-    HomeScreenContent()
+    HomeScreenContent(
+            navController = navController,
+    )
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenContent() {
+fun HomeScreenContent(
+        navController: NavController,
+) {
 
     val viewModel: HomeViewModel = getViewModel()
 
@@ -195,7 +201,9 @@ fun HomeScreenContent() {
                         responseProduct.data.forEach {
                             HomeProductCard(
                                 product = it,
-                                onClick = { /*TODO*/ },
+                                onClick = {
+                                          navController.navigate(Screen.ProductDetail.createRoute(it.id))
+                                },
                             )
                         }
                     } else {
@@ -222,16 +230,9 @@ fun HomeProductCard(
                 .fillMaxWidth()
                 .height(160.dp)
                 .padding(bottom = 12.dp)
+                .clickable { onClick() }
     ) {
         Row() {
-            Image(
-                painter = painterResource(id = R.drawable.img_logo),
-                contentDescription = "",
-                modifier = Modifier
-                        .width(160.dp)
-                        .height(160.dp),
-
-            )
             AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                             .data(product.image)
