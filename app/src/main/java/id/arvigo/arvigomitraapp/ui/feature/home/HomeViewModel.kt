@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.arvigo.arvigomitraapp.data.repository.HomeRepository
+import id.arvigo.arvigomitraapp.ui.feature.home.uistate.HomeProductState
 import id.arvigo.arvigomitraapp.ui.feature.home.uistate.HomeUiState
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -16,6 +17,7 @@ class HomeViewModel(
 
 
     val response: MutableState<HomeUiState> = mutableStateOf(HomeUiState.Empty)
+    val responseProduct: MutableState<HomeProductState> = mutableStateOf(HomeProductState.Empty)
 
     init {
         getHome()
@@ -25,12 +27,16 @@ class HomeViewModel(
         homeRepository.getHome()
                 .onStart {
                     response.value = HomeUiState.Loading
+                    responseProduct.value = HomeProductState.Loading
                 }
                 .catch {
                     response.value = HomeUiState.Failure(it)
+                    responseProduct.value = HomeProductState.Failure(it)
                 }.collect {
                     response.value = HomeUiState.Success(it.visitors)
+                    responseProduct.value = HomeProductState.Success(it.products ?: emptyList())
                 }
     }
+
 
 }
