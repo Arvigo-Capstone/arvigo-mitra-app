@@ -3,11 +3,11 @@ package id.arvigo.arvigomitraapp.data.source.network.response.add_offer
 
 import com.google.gson.annotations.SerializedName
 
-data class DetailMarketplace(
+data class TestMarketplaceItem(
     @SerializedName("addresses_id")
-    val addressId: Any?,
-    @SerializedName("marketplace_id")
-    val marketplaceId: Int,
+    val addressesId: Int,
     @SerializedName("link")
     val link: String,
+    @SerializedName("marketplace_id")
+    val marketplaceId: Int
 )

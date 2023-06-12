@@ -72,7 +72,8 @@ interface ApiService {
     ) : DeleteResponse
 
     @POST("/v1/products/merchants")
-    fun addOffer(
-            @Body request: AddOfferRequest
-    ): AddOfferResponse
+    suspend fun addOffer(
+            @Header("Authorization") token: String,
+            @Body request: AddOfferRequest,
+    ): Call<AddOfferResponse>
 }

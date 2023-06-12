@@ -67,6 +67,9 @@ import id.arvigo.arvigomitraapp.utils.saveUrisToFiles
 import org.koin.androidx.compose.getViewModel
 import java.io.File
 import androidx.compose.ui.graphics.asImageBitmap
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 
 
 @Composable
@@ -173,7 +176,7 @@ fun AddOfferContent(
 
                         if (imgFiles.isNotEmpty()) {
                             val size = imgFiles.size
-                            Text(text = "$size Foto Produk Berhasil Ditambahkan")
+                            Text(text = "$size Foto Produk Berhasil Ditambahkan", color = MaterialTheme.colorScheme.onPrimary)
                         }
 
 
@@ -262,6 +265,9 @@ fun AddOfferContent(
                                 .fillMaxWidth()
                                 .height(50.dp),
                         onClick = {
+                            viewModel.addOffer(
+                                    images = imgFiles,
+                            )
 
                         },
                         shape = MaterialTheme.shapes.small,
@@ -316,5 +322,17 @@ fun ExposedDropdownMenu() {
             }
         }
     }
+}
+
+fun createMultipartParts(files: List<File>): List<MultipartBody.Part> {
+    val parts = mutableListOf<MultipartBody.Part>()
+
+    files.forEach { file ->
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val part = MultipartBody.Part.createFormData("image", file.name, requestFile)
+        parts.add(part)
+    }
+    Log.d("Multipart", "createMultipartParts: $parts")
+    return parts
 }
 

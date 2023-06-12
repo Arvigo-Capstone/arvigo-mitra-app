@@ -57,7 +57,7 @@ val viewModelModules = module {
     viewModel { RegisterViewModel(get(), get(), get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { ProductDetailViewModel(get()) }
-    viewModel { AddOfferViewModel(get()) }
+    viewModel { AddOfferViewModel(get(), get(), get()) }
 }
 
 val useCaseModule = module {
