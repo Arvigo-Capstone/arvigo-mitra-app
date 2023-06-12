@@ -154,7 +154,9 @@ fun HomeScreenContent(
                                 ))
                         }
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                      navController.navigate(Screen.AddOffer.route)
+                            },
                             shape = RoundedCornerShape(12),
                             modifier = Modifier
                                 .width(120.dp),

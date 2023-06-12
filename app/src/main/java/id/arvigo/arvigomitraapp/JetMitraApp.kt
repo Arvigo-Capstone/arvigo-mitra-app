@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import id.arvigo.arvigomitraapp.ui.feature.LoginScreen
+import id.arvigo.arvigomitraapp.ui.feature.add_offer.AddOfferScreen
 import id.arvigo.arvigomitraapp.ui.feature.home.HomeScreen
 import id.arvigo.arvigomitraapp.ui.feature.product_detail.ProductDetailScreen
 import id.arvigo.arvigomitraapp.ui.feature.profile.ProfileScreen
@@ -45,6 +46,7 @@ fun JetMitraApp(
                 Screen.Register.route,
                 Screen.Splash.route,
                     Screen.ProductDetail.route,
+                    Screen.AddOffer.route,
             )
             if (currentRoute !in excludedRoutes) {
                 BottomBar(navController)
@@ -102,6 +104,11 @@ fun JetMitraApp(
                 ProductDetailScreen(
                         navController = navController,
                         productId = productId,
+                )
+            }
+            composable(Screen.AddOffer.route) {
+                AddOfferScreen(
+                        navController = navController,
                 )
             }
 

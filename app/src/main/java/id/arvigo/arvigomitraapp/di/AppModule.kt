@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import id.arvigo.arvigomitraapp.data.repository.AddOfferRepository
 import id.arvigo.arvigomitraapp.data.repository.AuthRepository
 import id.arvigo.arvigomitraapp.data.repository.HomeRepository
 import id.arvigo.arvigomitraapp.data.repository.ProductDetailRepository
 import id.arvigo.arvigomitraapp.data.source.local.AuthPreferences
 import id.arvigo.arvigomitraapp.data.source.network.ApiService
+import id.arvigo.arvigomitraapp.ui.feature.add_offer.AddOfferViewModel
 import id.arvigo.arvigomitraapp.ui.feature.home.HomeViewModel
 import id.arvigo.arvigomitraapp.ui.feature.login.LoginViewModel
 import id.arvigo.arvigomitraapp.ui.feature.product_detail.ProductDetailViewModel
@@ -55,12 +57,14 @@ val viewModelModules = module {
     viewModel { RegisterViewModel(get(), get(), get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { ProductDetailViewModel(get()) }
+    viewModel { AddOfferViewModel(get()) }
 }
 
 val useCaseModule = module {
     single { AuthRepository(get()) }
     single { HomeRepository(get(), get()) }
     single { ProductDetailRepository(get(), get()) }
+    single {AddOfferRepository(get(), get())}
 }
 
 

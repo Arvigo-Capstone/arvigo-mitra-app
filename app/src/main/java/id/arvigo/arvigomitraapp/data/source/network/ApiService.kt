@@ -1,7 +1,9 @@
 package id.arvigo.arvigomitraapp.data.source.network
 
 import id.arvigo.arvigomitraapp.data.source.network.request.LoginRequest
+import id.arvigo.arvigomitraapp.data.source.network.response.AddOfferResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.LoginResponse
+import id.arvigo.arvigomitraapp.data.source.network.response.add_offer.AddOfferRequest
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.city.CityResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.district.DistrictResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.postal_code.PostalcodeResponse
@@ -68,4 +70,9 @@ interface ApiService {
             @Header("Authorization") token: String,
             @Path("id") id: String
     ) : DeleteResponse
+
+    @POST("/v1/products/merchants")
+    fun addOffer(
+            @Body request: AddOfferRequest
+    ): AddOfferResponse
 }
