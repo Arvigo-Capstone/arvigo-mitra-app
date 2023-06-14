@@ -7,7 +7,7 @@ data class DetailMarketplace(
     @SerializedName("addresses_id")
     val addressId: Any?,
     @SerializedName("marketplace_id")
-    val marketplaceId: Int,
+    val marketplaceId: Any?,
     @SerializedName("link")
-    val link: String,
+    val link: Any?,
 )

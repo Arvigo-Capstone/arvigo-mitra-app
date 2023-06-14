@@ -155,7 +155,7 @@ fun HomeScreenContent(
                         }
                         Button(
                             onClick = {
-                                      navController.navigate(Screen.AddOffer.route)
+                                      navController.navigate(Screen.AddOffer.createRoute(0))
                             },
                             shape = RoundedCornerShape(12),
                             modifier = Modifier

@@ -11,13 +11,12 @@ class AddOfferRepository(
         private val apiService: ApiService,
 ) {
 
-    fun addOffer(request: AddOfferRequest) = flow {
+    fun getInitialProduct(id: String) = flow {
         val token = authPreferences.getAuthToken()
-        Log.d("Hit API Add Offer", "Add Offer ${request.toString()}")
-        emit(apiService.addOffer(
+        emit(apiService.getInitialProduct(
                 token = "Bearer $token",
-                request = request
-        ))
+                id = id
+        ).data)
     }
 
 }

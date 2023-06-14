@@ -200,7 +200,7 @@ fun ProductDetailScreen(
                                                 //navController.navigate(Screen.RecommendationStore.createRoute(idState.value))
                                             },
                                             shape = MaterialTheme.shapes.small,
-                                            border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.secondary),
+                                            border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onSecondary),
                                     ) {
                                         Text(text = response.data.status, style = MaterialTheme.typography.titleMedium.copy(
                                                 color =MaterialTheme.colorScheme.onSecondary,

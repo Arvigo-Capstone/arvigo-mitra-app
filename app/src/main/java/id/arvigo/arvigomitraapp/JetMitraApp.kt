@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import id.arvigo.arvigomitraapp.ui.feature.LoginScreen
 import id.arvigo.arvigomitraapp.ui.feature.add_offer.AddOfferScreen
+import id.arvigo.arvigomitraapp.ui.feature.add_offer.initial_page.InitialPageScreen
 import id.arvigo.arvigomitraapp.ui.feature.home.HomeScreen
 import id.arvigo.arvigomitraapp.ui.feature.product_detail.ProductDetailScreen
 import id.arvigo.arvigomitraapp.ui.feature.profile.ProfileScreen
@@ -47,6 +48,7 @@ fun JetMitraApp(
                 Screen.Splash.route,
                     Screen.ProductDetail.route,
                     Screen.AddOffer.route,
+                Screen.InitialProduct.route,
             )
             if (currentRoute !in excludedRoutes) {
                 BottomBar(navController)
@@ -106,12 +108,36 @@ fun JetMitraApp(
                         productId = productId,
                 )
             }
-            composable(Screen.AddOffer.route) {
+            composable(
+                route = Screen.AddOffer.route,
+                arguments = listOf(
+                    navArgument(PRODUCT_ID) {
+                        type = NavType.IntType
+                    }
+                )
+                ) {
+                Log.d("Args", it.arguments?.getInt(PRODUCT_ID).toString())
+                val productId = it.arguments?.getInt(PRODUCT_ID)
                 AddOfferScreen(
                         navController = navController,
+                        initialId = productId,
                 )
             }
-
+            composable(
+                route = Screen.InitialProduct.route,
+                arguments = listOf(
+                    navArgument(PRODUCT_ID) {
+                        type = NavType.StringType
+                    }
+                )
+            ) {
+                Log.d("Args", it.arguments?.getString(PRODUCT_ID).toString())
+                val productId = it.arguments?.getString(PRODUCT_ID)
+                InitialPageScreen(
+                    navController = navController,
+                    id = productId ?: "1",
+                )
+            }
 
 
         }

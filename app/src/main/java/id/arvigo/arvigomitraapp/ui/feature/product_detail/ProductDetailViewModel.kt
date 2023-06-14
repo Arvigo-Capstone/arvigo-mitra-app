@@ -37,7 +37,13 @@ class ProductDetailViewModel(private val productDetailRepository: ProductDetailR
         productDetailRepository.deleteProduct(
                 productId = productId
         )
-        Log.d("DELETE PENAWARAN SUCCESS", "delete Product Detail $productId")
+            .collect { success ->
+                if (success) {
+                    Log.d("DELETE PENAWARAN SUCCESS", "delete Product Detail $productId")
+                } else {
+                    Log.d("DELETE PENAWARAN FAILED", "delete Product Detail $productId")
+                }
+            }
     }
 
 }

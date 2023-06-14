@@ -11,7 +11,7 @@ data class AddOfferRequest(
         @SerializedName("images")
     val images: List<File>,
         @SerializedName("detail_product_marketplaces")
-    val marketplaces: ArrayList<TestMarketplaceItem>,
+    val marketplaces: String,
         @SerializedName("name")
     val name: String,
         @SerializedName("price")

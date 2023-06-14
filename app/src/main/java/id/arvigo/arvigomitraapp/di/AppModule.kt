@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import id.arvigo.arvigomitraapp.MainActivity
+import id.arvigo.arvigomitraapp.MyApp
 import id.arvigo.arvigomitraapp.data.repository.AddOfferRepository
 import id.arvigo.arvigomitraapp.data.repository.AuthRepository
 import id.arvigo.arvigomitraapp.data.repository.HomeRepository
@@ -25,7 +28,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
+
 
 val networkModule = module {
     single {
@@ -34,7 +39,9 @@ val networkModule = module {
                 level =
                     if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
             }
+        val chucker = ChuckerInterceptor.Builder(MyApp.context).build()
         OkHttpClient.Builder()
+            .addInterceptor(chucker)
             .addInterceptor(loggingInterceptor)
             .connectTimeout(100, TimeUnit.SECONDS) // Set the connection timeout
             .readTimeout(30, TimeUnit.SECONDS) // Set the read timeout
@@ -44,6 +51,7 @@ val networkModule = module {
     single {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .client(get())
             .build()
