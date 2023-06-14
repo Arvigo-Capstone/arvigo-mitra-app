@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.flowOn
 
 class AuthRepository(private val apiService: ApiService) {
 
-    fun getProvice() = flow {
-        Log.d("Hit API Province", "get all province")
+    fun getProvinces() = flow {
         try {
-            emit(apiService.getProvice().data)
+            emit(apiService.getProvinces().data)
+            Log.d("Hit API Province", "get all province at repo ${apiService.getProvinces().data}")
         } catch (e: Exception) {
             Log.d("ERROR API Province", e.toString())
         }

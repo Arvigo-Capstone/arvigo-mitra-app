@@ -8,8 +8,10 @@ import id.arvigo.arvigomitraapp.data.source.network.response.add_offer.DetailMar
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.city.CityResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.district.DistrictResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.postal_code.PostalcodeResponse
-import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.provice.ProviceResponse
+import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.provice.ProvincesResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.subdistrict.SubdistrictResponse
+import id.arvigo.arvigomitraapp.ui.feature.register.api.RegisterRequest
+import id.arvigo.arvigomitraapp.ui.feature.register.api.RegisterResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.detail_product.DeleteResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.detail_product.ProductDetailResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.home.HomeResponse
@@ -26,6 +28,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 import java.lang.reflect.Array
 
 interface ApiService {
@@ -37,30 +40,30 @@ interface ApiService {
 
     @POST("/v1/auth/register-partner")
     fun register(
-        @Body request: LoginRequest
-    ): Call<LoginResponse>
+        @Body request: RegisterRequest
+    ): Call<RegisterResponse>
 
     @GET("/v1/location/provinces")
-    fun getProvice() : ProviceResponse
+    suspend fun getProvinces() : ProvincesResponse
 
-    @GET("/v1/location/cities?province_id={id}")
-    fun getCity(
-        @Path ("id") id : Int
+    @GET("/v1/location/cities")
+    suspend fun getCity(
+        @Query ("province_id") id : Int
     ) : CityResponse
 
-    @GET("/v1/location/districts?city_id={id}")
-    fun getDistrict(
-        @Path ("id") id : Int
+    @GET("/v1/location/districts")
+    suspend fun getDistrict(
+        @Query("city_id") id : Int
     ) : DistrictResponse
 
-    @GET("/v1/location/subdistricts?district_id={id}")
-    fun getSubdistrict(
-        @Path ("id") id : Int
+    @GET("/v1/location/subdistricts")
+    suspend fun getSubdistrict(
+        @Query("district_id") id : Int
     ) : SubdistrictResponse
 
-    @GET("/v1/location/postal_codes?subdistrict_id={id}")
-    fun getPostalcode(
-        @Path ("id") id : Int
+    @GET("/v1/location/postal_codes")
+    suspend fun getPostalcode(
+        @Query("subdistrict_id") id : Int
     ) : PostalcodeResponse
 
     @GET("/v1/merchant-app/home")

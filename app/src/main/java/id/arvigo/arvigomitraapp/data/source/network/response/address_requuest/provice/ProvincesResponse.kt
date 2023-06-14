@@ -3,7 +3,7 @@ package id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.p
 
 import com.google.gson.annotations.SerializedName
 
-data class ProviceResponse(
+data class ProvincesResponse(
     @SerializedName("data")
     val `data`: List<ProvinceItem>,
     @SerializedName("message")
