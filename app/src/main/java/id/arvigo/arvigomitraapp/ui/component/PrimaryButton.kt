@@ -13,8 +13,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PrimaryButton(title: String, onClick: () -> Unit) {
+fun PrimaryButton(enable: Boolean, title: String, onClick: () -> Unit) {
     Button(
+        enabled = enable,
         onClick = onClick,
         shape = RoundedCornerShape(10),
         modifier = Modifier

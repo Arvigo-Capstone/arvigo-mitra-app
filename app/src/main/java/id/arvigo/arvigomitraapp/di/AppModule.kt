@@ -65,7 +65,7 @@ val viewModelModules = module {
     viewModel { SplashViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { RegisterDropDownViewModel(get(), get(), get()) }
-    viewModel { RegisterViewModel(get()) }
+    viewModel { RegisterViewModel(get(), get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { ProductDetailViewModel(get()) }
     viewModel { AddOfferViewModel(get(), get(), get()) }

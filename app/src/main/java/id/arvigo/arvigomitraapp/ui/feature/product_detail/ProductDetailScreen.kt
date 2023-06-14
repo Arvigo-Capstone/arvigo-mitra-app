@@ -336,6 +336,8 @@ fun ProductDetailScreen(
                         Text(text = "Empty", modifier = Modifier.align(Alignment.Center))
                     }
                 }
+
+                else -> {}
             }
         }
     }

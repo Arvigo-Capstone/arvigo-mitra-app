@@ -28,6 +28,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 import java.lang.reflect.Array
 
 interface ApiService {
@@ -45,24 +46,24 @@ interface ApiService {
     @GET("/v1/location/provinces")
     suspend fun getProvinces() : ProvincesResponse
 
-    @GET("/v1/location/cities?province_id={id}")
-    fun getCity(
-        @Path ("id") id : Int
+    @GET("/v1/location/cities")
+    suspend fun getCity(
+        @Query ("province_id") id : Int
     ) : CityResponse
 
-    @GET("/v1/location/districts?city_id={id}")
-    fun getDistrict(
-        @Path ("id") id : Int
+    @GET("/v1/location/districts")
+    suspend fun getDistrict(
+        @Query("city_id") id : Int
     ) : DistrictResponse
 
-    @GET("/v1/location/subdistricts?district_id={id}")
-    fun getSubdistrict(
-        @Path ("id") id : Int
+    @GET("/v1/location/subdistricts")
+    suspend fun getSubdistrict(
+        @Query("district_id") id : Int
     ) : SubdistrictResponse
 
-    @GET("/v1/location/postal_codes?subdistrict_id={id}")
-    fun getPostalcode(
-        @Path ("id") id : Int
+    @GET("/v1/location/postal_codes")
+    suspend fun getPostalcode(
+        @Query("subdistrict_id") id : Int
     ) : PostalcodeResponse
 
     @GET("/v1/merchant-app/home")

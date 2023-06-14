@@ -29,6 +29,22 @@ class RegisterDropDownViewModel(
         _emailState.value = emailState.value.copy(text = value)
     }
 
+    private val _storeName = mutableStateOf(TextFieldState())
+    val storeName: State<TextFieldState> = _storeName
+
+    fun setStoreName(value:String){
+        _storeName.value = storeName.value.copy(text = value)
+    }
+
+    private val _streetState = mutableStateOf(TextFieldState())
+    val streetState: State<TextFieldState> = _streetState
+
+    fun setStreet(value:String){
+        _streetState.value = streetState.value.copy(text = value)
+    }
+
+
+
     private val _passwordState = mutableStateOf(TextFieldState())
     val passwordState: State<TextFieldState> = _passwordState
 
@@ -36,11 +52,14 @@ class RegisterDropDownViewModel(
         _passwordState.value = passwordState.value.copy(text = value)
     }
 
-    init {
-        getProvinces()
+    private val _passwordConfirState = mutableStateOf(TextFieldState())
+    val passwordConfirState: State<TextFieldState> = _passwordConfirState
+
+    fun setPasswordConfir(value:String){
+        _passwordConfirState.value = passwordConfirState.value.copy(text = value)
     }
 
-    private fun getProvinces() = viewModelScope.launch {
+     fun getProvinces() = viewModelScope.launch {
         authRepository.getProvinces()
             .onStart {
                 response.value = RegisterUiState.Loading
@@ -48,6 +67,50 @@ class RegisterDropDownViewModel(
             .collect {
                 response.value = RegisterUiState.SuccessGetProvice(it)
                 Log.d("Hit API Provinces", "get Province at viewModel ${response.value}")
+            }
+    }
+
+    fun getCities(provinceId: Int) = viewModelScope.launch {
+        authRepository.getCity(provice_id = provinceId)
+            .onStart {
+                response.value = RegisterUiState.Loading
+            }
+            .collect {
+                response.value = RegisterUiState.SuccessGetCity(it)
+                Log.d("Hit API Cities", "get City at viewModel ${response.value}")
+            }
+    }
+
+    fun getDistrict(cityId: Int) = viewModelScope.launch {
+        authRepository.getDistrict(city_id = cityId)
+            .onStart {
+                response.value = RegisterUiState.Loading
+            }
+            .collect {
+                response.value = RegisterUiState.SuccessGetDistrict(it)
+                Log.d("Hit API District", "get District at viewModel ${response.value}")
+            }
+    }
+
+    fun getSubdistrict(districtId: Int) = viewModelScope.launch {
+        authRepository.getSubdisctrict(district_id = districtId)
+            .onStart {
+                response.value = RegisterUiState.Loading
+            }
+            .collect {
+                response.value = RegisterUiState.SuccessGetSubdistrict(it)
+                Log.d("Hit API Subdistrict", "get Subdistcrit at viewModel ${response.value}")
+            }
+    }
+
+    fun getPostalCode(subdistrictId: Int) = viewModelScope.launch {
+        authRepository.getPostalcode(subdistrict_id = subdistrictId)
+            .onStart {
+                response.value = RegisterUiState.Loading
+            }
+            .collect {
+                response.value = RegisterUiState.SuccessGetPostalCode(it)
+                Log.d("Hit API Subdistrict", "get Subdistcrit at viewModel ${response.value}")
             }
     }
 

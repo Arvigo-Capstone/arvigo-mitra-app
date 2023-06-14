@@ -175,7 +175,7 @@ fun LoginScreenContent(
             )
             Spacer(modifier = Modifier.padding(60.dp))
             val context = LocalContext.current
-            PrimaryButton(title = "Sign In", onClick = {
+            PrimaryButton(enable = true, title = "Sign In", onClick = {
                 viewModel.loginNew(emailState.text, passwordState.text, role)
             })
             Spacer(modifier = Modifier.padding(24.dp))
@@ -216,7 +216,7 @@ fun LoginCheck(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Forgot password?",
+            text = "Lupa password",
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.clickable {  }
@@ -227,7 +227,7 @@ fun LoginCheck(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Text(text = "Don't have an account? ", color = Color.Gray)
+            Text(text = "Tidak punya akun? ", color = Color.Gray)
             Text(
                 text = "Register",
                 color = MaterialTheme.colorScheme.primary,

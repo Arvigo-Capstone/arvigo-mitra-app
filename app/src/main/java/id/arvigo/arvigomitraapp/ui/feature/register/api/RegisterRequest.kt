@@ -19,7 +19,7 @@ data class RegisterRequest(
     val cityId: Int,
     @SerializedName("district_id")
     val districtId: Int,
-    @SerializedName("sub_district_id")
+    @SerializedName("subdistrict_id")
     val subDistrictId: Int,
     @SerializedName("postal_code_id")
     val postalCodeId: Int
