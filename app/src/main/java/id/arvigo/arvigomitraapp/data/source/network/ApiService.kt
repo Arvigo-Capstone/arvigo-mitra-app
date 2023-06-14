@@ -14,6 +14,7 @@ import id.arvigo.arvigomitraapp.data.source.network.response.detail_product.Dele
 import id.arvigo.arvigomitraapp.data.source.network.response.detail_product.ProductDetailResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.home.HomeResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.intial_product.InitialProductResponse
+import id.arvigo.arvigomitraapp.data.source.network.response.profile.ProfileResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -99,4 +100,10 @@ interface ApiService {
             @Part("detail_product_marketplaces") marketplaces: String,
             @Part images: List<MultipartBody.Part>
     ): Call<AddOfferResponse>
+
+    @GET("/v1/users/{userId}")
+    suspend fun getProfile(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String
+    ): ProfileResponse
 }
