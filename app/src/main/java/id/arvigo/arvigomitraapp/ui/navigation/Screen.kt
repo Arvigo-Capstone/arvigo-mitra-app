@@ -1,6 +1,7 @@
 package id.arvigo.arvigomitraapp.ui.navigation
 
 const val PRODUCT_ID = "product_id"
+const val UNIQUE = "unique_id"
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
@@ -16,5 +17,11 @@ sealed class Screen(val route: String) {
     }
     object InitialProduct : Screen("initial_product/{$PRODUCT_ID}") {
         fun createRoute(productId: String) = "initial_product/$productId"
+    }
+    object Subscription : Screen("subscription}")
+    object PickProduct : Screen("pick_product")
+
+    object Payment : Screen("payment/{$UNIQUE}/{$PRODUCT_ID}") {
+        fun createRoute(uniqueId: Int, productId: Int) = "payment/$uniqueId/$productId"
     }
 }

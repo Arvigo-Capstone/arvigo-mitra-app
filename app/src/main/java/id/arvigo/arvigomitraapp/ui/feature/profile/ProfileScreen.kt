@@ -1,5 +1,6 @@
 package id.arvigo.arvigomitraapp.ui.feature.profile
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -75,16 +76,26 @@ fun ProfileScreen(
                                         .width(80.dp)
                                         .padding(horizontal = 4.dp, vertical = 4.dp),
                                 ) {
-                                    AsyncImage(
-                                        model = ImageRequest.Builder(LocalContext.current)
-                                            .data("")
-                                            .crossfade(true)
-                                            .build(),
-                                        contentDescription = null,
-                                        contentScale = ContentScale.Crop,
-                                        alignment = Alignment.Center,
-                                        modifier = Modifier.clip(CircleShape)
-                                    )
+                                    if (response.data.avatar.isNotEmpty()) {
+                                        AsyncImage(
+                                            model = ImageRequest.Builder(LocalContext.current)
+                                                .data(response.data.avatar)
+                                                .crossfade(true)
+                                                .build(),
+                                            contentDescription = null,
+                                            contentScale = ContentScale.Crop,
+                                            alignment = Alignment.Center,
+                                            modifier = Modifier.clip(CircleShape)
+                                        )
+                                    } else {
+                                        Image(
+                                            painter = painterResource(id = R.drawable.img_logo),
+                                            contentDescription = null,
+                                            contentScale = ContentScale.Crop,
+                                            alignment = Alignment.Center,
+                                            modifier = Modifier.clip(CircleShape)
+                                        )
+                                    }
                                 }
                                 Spacer(modifier = Modifier.padding(4.dp))
                                 Column(

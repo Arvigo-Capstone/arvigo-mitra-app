@@ -26,9 +26,13 @@ import id.arvigo.arvigomitraapp.ui.feature.product_detail.ProductDetailScreen
 import id.arvigo.arvigomitraapp.ui.feature.profile.ProfileScreen
 import id.arvigo.arvigomitraapp.ui.feature.register.RegisterScreen
 import id.arvigo.arvigomitraapp.ui.feature.splash.SplashScreen
+import id.arvigo.arvigomitraapp.ui.feature.subcription.SubscriptionPayment
+import id.arvigo.arvigomitraapp.ui.feature.subcription.SubscriptionScreen
+import id.arvigo.arvigomitraapp.ui.feature.subcription.pick_product.PickProductScreen
 import id.arvigo.arvigomitraapp.ui.navigation.NavigationItem
 import id.arvigo.arvigomitraapp.ui.navigation.PRODUCT_ID
 import id.arvigo.arvigomitraapp.ui.navigation.Screen
+import id.arvigo.arvigomitraapp.ui.navigation.UNIQUE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,6 +53,9 @@ fun JetMitraApp(
                     Screen.ProductDetail.route,
                     Screen.AddOffer.route,
                 Screen.InitialProduct.route,
+                Screen.Subscription.route,
+                Screen.Payment.route,
+                Screen.PickProduct.route,
             )
             if (currentRoute !in excludedRoutes) {
                 BottomBar(navController)
@@ -138,7 +145,38 @@ fun JetMitraApp(
                     id = productId ?: "1",
                 )
             }
-
+            composable(
+                route = Screen.Subscription.route,
+                ) {
+                SubscriptionScreen(
+                    navController = navController,
+                )
+            }
+            composable(
+                route = Screen.Payment.route,
+                arguments = listOf(
+                    navArgument(UNIQUE) {
+                        type = NavType.IntType
+                    },
+                    navArgument(PRODUCT_ID) {
+                        type = NavType.IntType
+                    }
+                )
+            ) {
+                Log.d("Args", it.arguments?.getString(UNIQUE).toString())
+                val uniq = it.arguments?.getInt(UNIQUE)
+                val productId = it.arguments?.getInt(PRODUCT_ID)
+                SubscriptionPayment(
+                    navController = navController,
+                    uniqueCode = uniq!!,
+                    productId = productId!!,
+                )
+            }
+            composable(Screen.PickProduct.route) {
+                PickProductScreen(
+                    navController = navController,
+                )
+            }
 
         }
     }

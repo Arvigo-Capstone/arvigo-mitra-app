@@ -185,7 +185,9 @@ fun HomeScreenContent(
                                 ))
                         }
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                      navController.navigate(Screen.Subscription.route)
+                            },
                             shape = RoundedCornerShape(12),
                             modifier = Modifier
                                 .width(120.dp),
@@ -211,7 +213,11 @@ fun HomeScreenContent(
                     } else {
                         Text(text = "Belum ada produk yang ditambahkan.", style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
-                        ))
+                            textAlign = TextAlign.Center
+                        ),
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(top = 32.dp)
+                            )
                     }
                 }
 
@@ -259,11 +265,11 @@ fun HomeProductCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = product.status, style = MaterialTheme.typography.titleMedium.copy(
                     color = if (product.status == "APPROVED") {
-                        Color.Green
+                        MaterialTheme.colorScheme.onPrimary
                     } else if(product.status == "WAITING LIST") {
-                        Color.Yellow
+                        MaterialTheme.colorScheme.onSecondary
                     } else {
-                        Color.Red
+                        MaterialTheme.colorScheme.error
                     }
                 ))
             }
