@@ -87,6 +87,8 @@ class LoginViewModel(
                                _navigateToHome.value = true
                            } else {
                                _loginResult.value = LoginApiResults.Error("Invalid response")
+                               clearEmail()
+                               clearPassword()
                            }
                        } else {
                            _loginResult.value = LoginApiResults.Error(response.message())
@@ -95,6 +97,8 @@ class LoginViewModel(
                                       UiEvents.SnackbarEvent(response.message())
                                  )
                            }
+                           clearEmail()
+                           clearPassword()
                        }
                     }
 
@@ -118,6 +122,14 @@ class LoginViewModel(
                 _loginResult.value = LoginApiResults.Error(e.localizedMessage ?: "Unknown error occurred")
             }
         }
+    }
+
+    fun clearEmail() {
+        setEmail("")
+    }
+
+    fun clearPassword() {
+        setPassword("")
     }
 
 //    private fun checkLogin() {

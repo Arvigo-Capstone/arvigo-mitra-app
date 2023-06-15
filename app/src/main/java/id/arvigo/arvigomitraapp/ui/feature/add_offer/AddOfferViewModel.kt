@@ -130,28 +130,9 @@ class AddOfferViewModel(
                     marketplaces = cleanedJson,
                     merchantId = merchantId.toInt(),
                     productId = initialId,
-            ).enqueue(object : Callback<AddOfferResponse>{
-                override fun onResponse(call: Call<AddOfferResponse>, response: Response<AddOfferResponse>) {
-                    if (response.isSuccessful) {
-                        Log.d("Add Offer form ViewModel", "Add Offer ${response.body().toString()}")
-                        Log.d("SUCCESS", "SUCCESS")
-                        isLoading.value = false
-                        isPostSuccess.value = true
-                    } else{
-                        Log.d("Add Offer form ViewModel", "Add Offer ${response.body().toString()}")
-                        Log.d("FAILED", "FAILED ${response.body().toString()}")
-                        isLoading.value = false
-                        isPostFailed.value = true
-                    }
-                }
-
-                override fun onFailure(call: Call<AddOfferResponse>, t: Throwable) {
-                    Log.d("FAILED", "FAIL ${t.message.toString()}")
-                    isLoading.value = false
-                    isPostFailed.value = true
-                }
-
-            })
+            )
+            isLoading.value = false
+            isPostSuccess.value = true
         } catch (e: HttpException) {
             Log.d("FAILED", "Add Offer ${e.message}")
             isLoading.value = false

@@ -21,6 +21,7 @@ import id.arvigo.arvigomitraapp.ui.feature.profile.ProfileViewModel
 import id.arvigo.arvigomitraapp.ui.feature.register.RegisterDropDownViewModel
 import id.arvigo.arvigomitraapp.ui.feature.register.RegisterViewModel
 import id.arvigo.arvigomitraapp.ui.feature.splash.SplashViewModel
+import id.arvigo.arvigomitraapp.ui.feature.subcription.SubscriptionViewModel
 import id.arvigo.arvigomitraapp.utils.StaticConstant.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -70,6 +71,7 @@ val viewModelModules = module {
     viewModel { ProductDetailViewModel(get()) }
     viewModel { AddOfferViewModel(get(), get(), get()) }
     viewModel { ProfileViewModel(get(), get()) }
+    viewModel { SubscriptionViewModel(get(), get()) }
 }
 
 val useCaseModule = module {

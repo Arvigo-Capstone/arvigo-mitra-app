@@ -64,6 +64,7 @@ const val APPROVED = "APPROVED"
 const val REJECTED = "REJECTED"
 const val WAITINGLIST = "WAITING LIST"
 const val SUBCRIBED = "SUBCRIBED"
+const val PAYMENTREV = "PAYMENT REVIEW"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -176,7 +177,7 @@ fun ProductDetailScreen(
                                         ))
                                     }
                                 } else if (response.data.status == SUBCRIBED) {
-                                    Button(
+                                    OutlinedButton(
                                             modifier = Modifier
                                                     .width(160.dp)
                                                     .height(48.dp),
@@ -188,6 +189,23 @@ fun ProductDetailScreen(
                                     ) {
                                         Text(text = response.data.status, style = MaterialTheme.typography.titleMedium.copy(
                                                 color = MaterialTheme.colorScheme.primary,
+                                        ))
+                                    }
+                                }
+                                else if (response.data.status == PAYMENTREV) {
+                                    OutlinedButton(
+                                        modifier = Modifier
+                                            .width(240.dp)
+                                            .height(48.dp),
+                                        onClick = {
+                                            // TODO: ERROR WHEN CLICKED
+                                            //navController.navigate(Screen.RecommendationStore.createRoute(idState.value))
+                                        },
+                                        shape = MaterialTheme.shapes.small,
+                                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.error),
+                                    ) {
+                                        Text(text = response.data.status, style = MaterialTheme.typography.titleMedium.copy(
+                                            color = MaterialTheme.colorScheme.error,
                                         ))
                                     }
                                 } else {

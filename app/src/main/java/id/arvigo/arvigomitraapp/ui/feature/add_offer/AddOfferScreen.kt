@@ -157,6 +157,9 @@ fun AddOfferContent(
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
     var selectedOptionValue by remember { mutableStateOf(optionMap[selectedOptionText]) }
+    val buttonEnable = remember {
+        mutableStateOf(false)
+    }
 
 
     val launcherGallery = rememberLauncherForActivityResult(
@@ -358,6 +361,7 @@ fun AddOfferContent(
                             value = setTokped.text,
                             onValueChange = {
                                 viewModel.setTokped(it)
+                                buttonEnable.value = true
                             },
                             maxLines = 7,
                             singleLine = false,
@@ -384,6 +388,7 @@ fun AddOfferContent(
                             value = setShopee.text,
                             onValueChange = {
                                 viewModel.setShopee(it)
+                                buttonEnable.value = true
                             },
                             maxLines = 7,
                             singleLine = false,
@@ -483,17 +488,15 @@ fun AddOfferContent(
                 ) {
                 }
                 Button(
+                    enabled = buttonEnable.value,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(54.dp),
                         onClick = {
-
-
                             viewModel.addOffer(
                                     images = createMultipartParts(imgFiles),
                                     initialId = initialId!!,
                             )
-
                         },
                         shape = MaterialTheme.shapes.small,
                         colors = ButtonDefaults.buttonColors(

@@ -1,8 +1,10 @@
 package id.arvigo.arvigomitraapp.data.source.network
 
 import id.arvigo.arvigomitraapp.data.source.network.request.LoginRequest
+import id.arvigo.arvigomitraapp.data.source.network.request.SubscriptionRequest
 import id.arvigo.arvigomitraapp.data.source.network.response.AddOfferResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.LoginResponse
+import id.arvigo.arvigomitraapp.data.source.network.response.SubscriptionResponse
 import id.arvigo.arvigomitraapp.data.source.network.response.add_offer.AddOfferRequest
 import id.arvigo.arvigomitraapp.data.source.network.response.add_offer.DetailMarketplace
 import id.arvigo.arvigomitraapp.data.source.network.response.address_requuest.city.CityResponse
@@ -102,11 +104,17 @@ interface ApiService {
             @Part("product_id") productId: Int,
             @Part("detail_product_marketplaces") marketplaces: String,
             @Part images: List<MultipartBody.Part>
-    ): Call<AddOfferResponse>
+    ): AddOfferResponse
 
     @GET("/v1/users/{userId}")
     suspend fun getProfile(
         @Header("Authorization") token: String,
         @Path("userId") userId: String
     ): ProfileResponse
+
+    @POST("/v1/subscription/merchant")
+    suspend fun payment(
+        @Header("Authorization") token: String,
+        @Body request: SubscriptionRequest
+    ): SubscriptionResponse
 }
