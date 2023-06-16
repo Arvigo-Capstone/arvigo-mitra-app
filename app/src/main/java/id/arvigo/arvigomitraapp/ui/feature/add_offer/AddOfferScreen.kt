@@ -1,16 +1,11 @@
 package id.arvigo.arvigomitraapp.ui.feature.add_offer
 
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -20,14 +15,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -46,11 +38,9 @@ import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,33 +48,24 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import id.arvigo.arvigomitraapp.R
-import id.arvigo.arvigomitraapp.utils.saveUriToFile
-import id.arvigo.arvigomitraapp.utils.saveUrisToFiles
-import org.koin.androidx.compose.getViewModel
-import java.io.File
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.TextStyle
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
-import id.arvigo.arvigomitraapp.ui.feature.login.LoginApiResults
 import id.arvigo.arvigomitraapp.ui.navigation.Screen
-import kotlinx.coroutines.launch
+import id.arvigo.arvigomitraapp.utils.saveUrisToFiles
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import org.koin.androidx.compose.getViewModel
+import java.io.File
 
 
 @Composable
@@ -147,7 +128,7 @@ fun AddOfferContent(
     var imgFiles by remember { mutableStateOf<List<File>>(emptyList()) }
     val coroutineScope = rememberCoroutineScope()
     val isPostSuccess =  viewModel.isPostSuccess.value
-    val isPostFailed =   viewModel.isPostFailed.value
+    val isPostFailed =  viewModel.isPostFailed.value
     val (snackbarVisibleState, setSnackBarState) = remember { mutableStateOf(false) }
     val options = listOf("Kacamata", "Makeup")
     val optionMap = mapOf(
@@ -324,6 +305,7 @@ fun AddOfferContent(
                                         focusedBorderColor = MaterialTheme.colorScheme.primary,
                                         unfocusedBorderColor = Color.LightGray
                                 ),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(text = "Deskripsi")

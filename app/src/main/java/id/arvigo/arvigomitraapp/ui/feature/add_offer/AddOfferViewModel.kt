@@ -134,6 +134,7 @@ class AddOfferViewModel(
             isLoading.value = false
             isPostSuccess.value = true
         } catch (e: HttpException) {
+            isPostFailed.value = true
             Log.d("FAILED", "Add Offer ${e.message}")
             isLoading.value = false
         }
