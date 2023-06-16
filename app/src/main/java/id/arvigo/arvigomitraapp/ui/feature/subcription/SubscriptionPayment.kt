@@ -38,6 +38,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,7 +74,9 @@ fun SubscriptionPayment(
     val context = LocalContext.current
     val isPostSuccess =  viewModel.isPostSuccess.value
     val isPostFailed =   viewModel.isPostFailed.value
-
+    val isEnableButton = remember {
+        mutableStateOf(false)
+    }
     val listProductId = remember {
         mutableStateListOf<Int>()
     }
@@ -174,16 +177,6 @@ fun SubscriptionPayment(
                         )
                         ) }
                     }
-                    if (isPostFailed) {
-                        Snackbar(
-                            modifier = Modifier.padding(8.dp),
-                            contentColor = Color.White,
-                            containerColor = MaterialTheme.colorScheme.error,
-                        ) { androidx.compose.material.Text(text = "Pembayaran gagal, mohon coba kembali dengan produk yang sudah di approved!", style = TextStyle(
-                            color = Color.White,
-                        )
-                        ) }
-                    }
                     Spacer(modifier = Modifier.height(32.dp))
                     PrimaryButton(
                         onClick = {
@@ -199,7 +192,7 @@ fun SubscriptionPayment(
                             Log.d("neo-tag", responseMessage.toString())
                         },
                         title = "Bayar",
-                        enable = true
+                        enable = productId != 0,
                     )
                 }
                 }

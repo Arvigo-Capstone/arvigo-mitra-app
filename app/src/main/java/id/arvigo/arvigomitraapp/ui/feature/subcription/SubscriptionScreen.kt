@@ -105,7 +105,7 @@ fun SubscriptionScreen(
                                 var uniqueCode = (100 until 1000).random()
                                       navController.navigate(Screen.Payment.createRoute(
                                           uniqueId = uniqueCode,
-                                          productId = 1
+                                          productId = 0
                                       ))
                             },
                             shape = MaterialTheme.shapes.medium,
