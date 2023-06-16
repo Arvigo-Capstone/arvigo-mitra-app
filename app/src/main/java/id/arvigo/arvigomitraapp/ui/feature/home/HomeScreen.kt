@@ -200,7 +200,7 @@ fun HomeScreenContent(
                 val responseProduct = viewModel.responseProduct.value
                 if (responseProduct is HomeProductState.Success) {
                     if (responseProduct.data.isNotEmpty()) {
-                        Text(text = "Total Pengunjung", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "Daftar Produk", style = MaterialTheme.typography.titleMedium)
                         Spacer(modifier = Modifier.height(16.dp))
                         responseProduct.data.forEach {
                             HomeProductCard(
@@ -268,6 +268,8 @@ fun HomeProductCard(
                         MaterialTheme.colorScheme.onPrimary
                     } else if(product.status == "WAITING LIST") {
                         MaterialTheme.colorScheme.onSecondary
+                    }  else if(product.status == "SUBSCRIBED") {
+                        MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.error
                     }

@@ -63,7 +63,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult as rememberLa
 const val APPROVED = "APPROVED"
 const val REJECTED = "REJECTED"
 const val WAITINGLIST = "WAITING LIST"
-const val SUBCRIBED = "SUBCRIBED"
+const val SUBCRIBED = "SUBSCRIBED"
 const val PAYMENTREV = "PAYMENT REVIEW"
 
 @OptIn(ExperimentalMaterial3Api::class)
