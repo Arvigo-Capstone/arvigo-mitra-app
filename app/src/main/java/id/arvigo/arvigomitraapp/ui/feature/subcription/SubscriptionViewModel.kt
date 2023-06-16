@@ -51,7 +51,6 @@ class SubscriptionViewModel(
                 isPostFailed.value = true
            }
             _isLoading.value = false
-            isPostFailed.value = true
 
         }
     }
