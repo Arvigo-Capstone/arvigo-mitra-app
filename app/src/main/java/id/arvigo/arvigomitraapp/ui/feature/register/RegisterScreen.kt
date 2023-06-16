@@ -1,6 +1,7 @@
 package id.arvigo.arvigomitraapp.ui.feature.register
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -113,23 +114,38 @@ fun RegisterScreenContent(
     }
 
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionTextProvice = ""
+    var expandedCity by remember { mutableStateOf(false) }
+    var expandedDistrict by remember { mutableStateOf(false) }
+    var expandedSubdisctrict by remember { mutableStateOf(false) }
+    var expandedPostalcode by remember { mutableStateOf(false) }
+
+    var selectedOptionTextProvice = remember {
+        mutableStateOf("")
+    }
     var selectedOptionIdProvince = remember {
         mutableStateOf(0)
     }
-    var selectedOptionTextCity = ""
+    var selectedOptionTextCity = remember {
+        mutableStateOf("")
+    }
     var selectedOptionIdCity = remember {
         mutableStateOf(0)
     }
-    var selectedOptionTextDistrict = ""
+    var selectedOptionTextDistrict = remember {
+        mutableStateOf("")
+    }
     var selectedOptionIdDistrict = remember {
         mutableStateOf(0)
     }
-    var selectedOptionTextSubdistrict = ""
+    var selectedOptionTextSubdistrict = remember {
+        mutableStateOf("")
+    }
     var selectedOptionIdSubdistrict = remember {
         mutableStateOf(0)
     }
-    var selectedOptionTextCode = ""
+    var selectedOptionTextCode = remember {
+        mutableStateOf("")
+    }
     var selectedOptionIdCode = remember {
         mutableStateOf(0)
     }
@@ -137,7 +153,7 @@ fun RegisterScreenContent(
     val loginResult by viewModelRegister.loginResult.observeAsState()
     val lifecycle : Lifecycle = LocalLifecycleOwner.current.lifecycle
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = 1) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             launch {
                 viewModel.getProvinces()
@@ -210,6 +226,7 @@ fun RegisterScreenContent(
                     modifier = Modifier
                         .width(400.dp)
                         .height(100.dp)
+                        .padding(top = 22.dp)
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
                 Text(text = "Welcome to Arvigo", style = MaterialTheme.typography.titleLarge.copy(
@@ -272,7 +289,7 @@ fun RegisterScreenContent(
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         readOnly = true,
-                        value = selectedOptionTextProvice,
+                        value = selectedOptionTextProvice.value,
                         leadingIcon = { Icon(imageVector = Icons.Default.LocationOn, contentDescription = "passIcon", tint =  Color.LightGray) },
                         onValueChange = {
 
@@ -295,7 +312,7 @@ fun RegisterScreenContent(
                                 text = { Text(selectionOption.provinceName.toString()) },
                                 onClick = {
                                     viewModel.getCities(selectionOption.provinceId)
-                                    selectedOptionTextProvice = selectionOption.provinceName.toString()
+                                    selectedOptionTextProvice.value = selectionOption.provinceName.toString()
                                     selectedOptionIdProvince.value = selectionOption.provinceId
                                     expanded = false
                                     showCity.value = true
@@ -309,13 +326,13 @@ fun RegisterScreenContent(
                 if (showCity.value) {
                     Spacer(modifier = Modifier.padding(top = 12.dp))
                     ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded },
+                        expanded = expandedCity,
+                        onExpandedChange = { expandedCity = !expandedCity },
                     ) {
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
-                            value = selectedOptionTextCity,
+                            value = selectedOptionTextCity.value,
                             leadingIcon = { Icon(imageVector = Icons.Default.LocationOn, contentDescription = "passIcon", tint =  Color.LightGray) },
                             onValueChange = {
 
@@ -326,11 +343,11 @@ fun RegisterScreenContent(
                                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                                 unfocusedBorderColor = Color.LightGray
                             ),
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCity) },
                         )
                         ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false },
+                            expanded = expandedCity,
+                            onDismissRequest = { expandedCity = false },
                         ) {
                             Log.d("hit api province screen","1 ${options.value}")
                             optionsCity.value.forEach { selectionOption ->
@@ -338,9 +355,9 @@ fun RegisterScreenContent(
                                     text = { Text(selectionOption.cityName) },
                                     onClick = {
                                         viewModel.getDistrict(selectionOption.cityId)
-                                        selectedOptionTextCity = selectionOption.cityName
+                                        selectedOptionTextCity.value = selectionOption.cityName
                                         selectedOptionIdCity.value = selectionOption.cityId
-                                        expanded = false
+                                        expandedCity = false
                                         showDistrict.value = true
                                         Log.d("hit api province screen","onclick $selectedOptionIdCity, $selectedOptionTextCity")
                                     },
@@ -353,13 +370,13 @@ fun RegisterScreenContent(
                 if (showDistrict.value) {
                     Spacer(modifier = Modifier.padding(top = 12.dp))
                     ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded },
+                        expanded = expandedDistrict,
+                        onExpandedChange = { expandedDistrict = !expandedDistrict },
                     ) {
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
-                            value = selectedOptionTextDistrict,
+                            value = selectedOptionTextDistrict.value,
                             leadingIcon = { Icon(imageVector = Icons.Default.LocationOn, contentDescription = "passIcon", tint =  Color.LightGray) },
                             onValueChange = {
 
@@ -370,11 +387,11 @@ fun RegisterScreenContent(
                                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                                 unfocusedBorderColor = Color.LightGray
                             ),
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedDistrict) },
                         )
                         ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false },
+                            expanded = expandedDistrict,
+                            onDismissRequest = { expandedDistrict = false },
                         ) {
                             Log.d("hit api province screen","1 ${options.value}")
                             disctrict.value.forEach { selectionOption ->
@@ -382,9 +399,9 @@ fun RegisterScreenContent(
                                     text = { Text(selectionOption.districtName) },
                                     onClick = {
                                         viewModel.getSubdistrict(selectionOption.districtId)
-                                        selectedOptionTextDistrict = selectionOption.districtName
+                                        selectedOptionTextDistrict.value = selectionOption.districtName
                                         selectedOptionIdDistrict.value = selectionOption.districtId
-                                        expanded = false
+                                        expandedDistrict = false
                                         showSubdistrict.value = true
                                         //Log.d("hit api district screen","onclick $selectedOptionTextDistrict, $selectedOptionIdDistrict")
                                     },
@@ -397,13 +414,13 @@ fun RegisterScreenContent(
                 if (showSubdistrict.value) {
                     Spacer(modifier = Modifier.padding(top = 12.dp))
                     ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded },
+                        expanded = expandedSubdisctrict,
+                        onExpandedChange = { expandedSubdisctrict = !expandedSubdisctrict },
                     ) {
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
-                            value = selectedOptionTextSubdistrict,
+                            value = selectedOptionTextSubdistrict.value,
                             leadingIcon = { Icon(imageVector = Icons.Default.LocationOn, contentDescription = "passIcon", tint =  Color.LightGray) },
                             onValueChange = {
 
@@ -414,11 +431,11 @@ fun RegisterScreenContent(
                                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                                 unfocusedBorderColor = Color.LightGray
                             ),
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedSubdisctrict) },
                         )
                         ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false },
+                            expanded = expandedSubdisctrict,
+                            onDismissRequest = { expandedSubdisctrict = false },
                         ) {
                             Log.d("hit api subdistrict screen","1 ${subdistrict.value}")
                             subdistrict.value.forEach { selectionOption ->
@@ -426,9 +443,9 @@ fun RegisterScreenContent(
                                     text = { Text(selectionOption.subdistrictName) },
                                     onClick = {
                                         viewModel.getPostalCode(selectionOption.subdistrictId)
-                                        selectedOptionTextSubdistrict = selectionOption.subdistrictName
+                                        selectedOptionTextSubdistrict.value = selectionOption.subdistrictName
                                         selectedOptionIdSubdistrict.value = selectionOption.subdistrictId
-                                        expanded = false
+                                        expandedSubdisctrict = false
                                         showPostalCode.value = true
                                         //Log.d("hit api subdistrict screen","onclick $selectedOptionTextSubdistrict, $selectedOptionIdSubdistrict")
                                     },
@@ -441,13 +458,13 @@ fun RegisterScreenContent(
                 if (showPostalCode.value) {
                     Spacer(modifier = Modifier.padding(top = 12.dp))
                     ExposedDropdownMenuBox(
-                        expanded = expanded,
-                        onExpandedChange = { expanded = !expanded },
+                        expanded = expandedPostalcode,
+                        onExpandedChange = { expandedPostalcode = !expandedPostalcode },
                     ) {
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = true,
-                            value = selectedOptionTextCode,
+                            value = selectedOptionTextCode.value,
                             leadingIcon = { Icon(imageVector = Icons.Default.LocationOn, contentDescription = "passIcon", tint =  Color.LightGray) },
                             onValueChange = {
 
@@ -458,20 +475,20 @@ fun RegisterScreenContent(
                                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                                 unfocusedBorderColor = Color.LightGray
                             ),
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedPostalcode) },
                         )
                         ExposedDropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false },
+                            expanded = expandedPostalcode,
+                            onDismissRequest = { expandedPostalcode = false },
                         ) {
                             Log.d("hit api subdistrict screen","1 ${subdistrict.value}")
                             postalCode.value.forEach { selectionOption ->
                                 DropdownMenuItem(
                                     text = { Text(selectionOption.postalCode.toString()) },
                                     onClick = {
-                                        selectedOptionTextCode = selectionOption.postalCode.toString()
+                                        selectedOptionTextCode.value = selectionOption.postalCode.toString()
                                         selectedOptionIdCode.value = selectionOption.postalCodeId
-                                        expanded = false
+                                        expandedPostalcode = false
                                         //Log.d("hit api code screen","onclick $selectedOptionTextCode, $selectedOptionIdCode")
                                     },
                                     contentPadding = PaddingValues(6.dp),
@@ -520,23 +537,25 @@ fun RegisterScreenContent(
                 Spacer(modifier = Modifier.padding(32.dp))
                 val context = LocalContext.current
                 PrimaryButton(enable =  buttonEnable.value,title = "Register", onClick = {
-                    val storeName = ""
-                    val password = ""
-                    val passwordConfirmation = ""
-                    val street = ""
-                    val registerRequest = RegisterRequest(
-                        storeName = nameState.value.text,
-                        email = emailState.value.text,
-                        password = passwordState.value.text,
-                        passwordConfirmation = passwordConfirmState.value.text,
-                        street = streetState.value.text,
-                        provinceId = selectedOptionIdProvince.value,
-                        cityId = selectedOptionIdCity.value,
-                        districtId = selectedOptionIdDistrict.value,
-                        subDistrictId = selectedOptionIdSubdistrict.value,
-                        postalCodeId = selectedOptionIdCode.value,
-                    )
-                    viewModelRegister.register(registerRequest)
+                    if (passwordState.value != passwordConfirmState.value) {
+                        buttonEnable.value = false
+                        Toast.makeText(context, "Password tidak sama", Toast.LENGTH_SHORT).show()
+                        return@PrimaryButton
+                    } else {
+                        val registerRequest = RegisterRequest(
+                            storeName = nameState.value.text,
+                            email = emailState.value.text,
+                            password = passwordState.value.text,
+                            passwordConfirmation = passwordConfirmState.value.text,
+                            street = streetState.value.text,
+                            provinceId = selectedOptionIdProvince.value,
+                            cityId = selectedOptionIdCity.value,
+                            districtId = selectedOptionIdDistrict.value,
+                            subDistrictId = selectedOptionIdSubdistrict.value,
+                            postalCodeId = selectedOptionIdCode.value,
+                        )
+                        viewModelRegister.register(registerRequest)
+                    }
                 })
                 Spacer(modifier = Modifier.padding(24.dp))
                 if (snackbarVisibleState) {
